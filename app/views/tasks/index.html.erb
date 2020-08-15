@@ -1,0 +1,40 @@
+<div class='pv2'>
+  <section class='todoapp'>
+    <section class='header'>
+      <h1>todos</h1>
+      <%= render 'form', task: Task.new %>
+    </section>
+    <section class='main'>
+      <input class="toggle-all" id="toggle-all" type="checkbox">
+      <label for="toggle-all">Mark all as complete</label>
+      <ul class='todo-list'>
+        <% @tasks.each do |task| %>
+          <li>
+            <div class='view'>
+              <input class='toggle' type='checkbox' />
+              <label><%= task.name %></label>
+              <%= button_to('', task, method: :destroy, class: 'destroy') %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+    <footer class="footer">
+      <span class="todo-count">
+        <strong><%= @tasks.size %></strong> <%= 'task'.pluralize(@tasks.size) %> left
+      </span>
+      <ul class="filters">
+        <li>
+          <%= link_to 'All', root_path %>
+        </li>
+        <li>
+          <a href="#/active">Active</a>
+        </li>
+        <li>
+          <a href="#/completed">Completed</a>
+        </li>
+      </ul>
+      <button class="clear-completed">Clear completed</button>
+    </footer>
+  </section>
+</div>
