@@ -31,7 +31,6 @@ class TasksController < ApplicationController
   end
 
   # POST /tasks
-  # POST /tasks.json
   def create
     @task = Task.new(task_params)
 
@@ -43,7 +42,6 @@ class TasksController < ApplicationController
   end
 
   # PATCH/PUT /tasks/1
-  # PATCH/PUT /tasks/1.json
   def update
     if @task.update(task_params)
       redirect_to root_path
@@ -53,7 +51,6 @@ class TasksController < ApplicationController
   end
 
   # DELETE /tasks/1
-  # DELETE /tasks/1.json
   def destroy
     @task.destroy
     redirect_back fallback_location: root_path

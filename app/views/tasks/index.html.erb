@@ -11,13 +11,17 @@
       <% @tasks.each do |task| %>
         <li <% if task.done %> class='completed' <% end %>>
           <div class='view'>
-              <%= form_with(model: task) do |f| %>
+            <%= form_for(task, namespace: task.id) do |f| %>
               <%= f.check_box :done, class: 'toggle', data: { autosubmit: true } %>
-              <label><%= task.name %></label>
-              <%= f.text_field :name, class: 'edit' %>
+              <label data-toggleEdit='true'><%= task.name %></label>
             <% end %>
-            <%= button_to('', task, method: :destroy, class: 'destroy') %>
+            <%= form_for(task, namespace: task.id, method: :delete, remote: true) do |f| %>
+              <%= f.button('', class: 'destroy') %>
+            <% end %>
           </div>
+          <%= form_for(task, namespace: task.id) do |f| %>
+            <%= f.text_field :name, class: 'edit', data: { toggleView: true } %>
+          <% end %>
         </li>
       <% end %>
     </ul>

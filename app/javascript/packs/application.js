@@ -25,3 +25,21 @@ document.addEventListener("change", (e) => {
     Rails.fire(target.form, "submit");
   }
 });
+
+document.addEventListener("dblclick", (e) => {
+  const target = e.target;
+  if (target.getAttribute("data-toggleedit")) {
+    const li = target.closest("li");
+    li.classList.add("editing");
+    li.querySelector("input[type=text]").focus();
+  }
+});
+
+document.addEventListener("blur", (e) => {
+  console.log("blur");
+  const target = e.relatedTarget;
+  console.log(e.target, e.relatedTarget);
+  if (target && target.getAttribute("data-toggleview")) {
+    target.closest("li").classList.remove("editing");
+  }
+});
