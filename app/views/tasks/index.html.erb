@@ -1,40 +1,38 @@
-<div class='pv2'>
-  <section class='todoapp'>
-    <section class='header'>
-      <h1>todos</h1>
-      <%= render 'form', task: Task.new %>
-    </section>
-    <section class='main'>
-      <input class="toggle-all" id="toggle-all" type="checkbox">
-      <label for="toggle-all">Mark all as complete</label>
-      <ul class='todo-list'>
-        <% @tasks.each do |task| %>
-          <li>
-            <div class='view'>
-              <input class='toggle' type='checkbox' />
-              <label><%= task.name %></label>
-              <%= button_to('', task, method: :destroy, class: 'destroy') %>
-            </div>
-          </li>
-        <% end %>
-      </ul>
-    </section>
-    <footer class="footer">
-      <span class="todo-count">
-        <strong><%= @tasks.size %></strong> <%= 'task'.pluralize(@tasks.size) %> left
-      </span>
-      <ul class="filters">
-        <li>
-          <%= link_to 'All', root_path %>
-        </li>
-        <li>
-          <a href="#/active">Active</a>
-        </li>
-        <li>
-          <a href="#/completed">Completed</a>
-        </li>
-      </ul>
-      <button class="clear-completed">Clear completed</button>
-    </footer>
+<section class='todoapp'>
+  <section class='header'>
+    <h1>todos</h1>
+    <%= render 'form', task: Task.new %>
   </section>
-</div>
+  <section class='main'>
+    <%= button_to('', toggle_all_tasks_path, class: 'toggle-all', id: 'toggle-all', remote: true) %>
+    <input class="toggle-all" id="toggle-all" type="checkbox">
+    <label for="toggle-all">Mark all as complete</label>
+    <ul class='todo-list'>
+      <% @tasks.each do |task| %>
+        <li <% if task.done %> class='completed' <% end %>>
+          <div class='view'>
+              <%= form_with(model: task) do |f| %>
+              <%= f.check_box :done, class: 'toggle', data: { autosubmit: true } %>
+              <label><%= task.name %></label>
+              <%= f.text_field :name, class: 'edit' %>
+            <% end %>
+            <%= button_to('', task, method: :destroy, class: 'destroy') %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+  <footer class="footer">
+    <span class="todo-count">
+      <strong><%= @tasks.active.size %></strong> <%= 'task'.pluralize(@tasks.active.size) %> left
+    </span>
+    <ul class="filters">
+      <li><%= nav_link 'All', root_path %></li>
+      <li><%= nav_link 'Active', active_tasks_path %></li>
+      <li><%= nav_link 'Completed', completed_tasks_path %></li>
+    </ul>
+    <%= form_with(url: clear_completed_tasks_path, remote: true) do |f| %>
+      <%= f.button('Clear completed', class: 'clear-completed') %>
+    <% end %>
+  </footer>
+</section>

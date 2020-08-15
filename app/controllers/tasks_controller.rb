@@ -2,23 +2,32 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
-  # GET /tasks.json
   def index
     @tasks = Task.all
   end
 
-  # GET /tasks/1
-  # GET /tasks/1.json
-  def show
+  def active
+    @tasks = Task.active
+    render :index
   end
 
-  # GET /tasks/new
-  def new
-    @task = Task.new
+  def completed
+    @tasks = Task.completed
+    render :index
   end
 
   # GET /tasks/1/edit
   def edit
+  end
+
+  def toggle_all
+    Task.all.update(done: Task.where(done: false).any?)
+    redirect_back fallback_location: root_path
+  end
+
+  def clear_completed
+    Task.destroy_by(done: true)
+    redirect_back fallback_location: root_path
   end
 
   # POST /tasks
@@ -47,10 +56,7 @@ class TasksController < ApplicationController
   # DELETE /tasks/1.json
   def destroy
     @task.destroy
-    respond_to do |format|
-      format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_back fallback_location: root_path
   end
 
   private
