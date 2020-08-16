@@ -11,7 +11,7 @@
       <% @tasks.each do |task| %>
         <li <% if task.done %> class='completed' <% end %>>
           <div class='view'>
-            <%= form_for(task, namespace: task.id) do |f| %>
+            <%= form_for(task, namespace: task.id, remote: true) do |f| %>
               <%= f.check_box :done, class: 'toggle', data: { autosubmit: true } %>
               <label data-toggleEdit='true'><%= task.name %></label>
             <% end %>
@@ -19,7 +19,7 @@
               <%= f.button('', class: 'destroy') %>
             <% end %>
           </div>
-          <%= form_for(task, namespace: task.id) do |f| %>
+          <%= form_for(task, namespace: task.id, remote: true) do |f| %>
             <%= f.text_field :name, class: 'edit', data: { toggleView: true } %>
           <% end %>
         </li>
