@@ -1,0 +1,14 @@
+<li <% if task.done %> class='completed' <% end %>>
+  <div class='view'>
+    <%= form_for(task, namespace: "toggle-#{task.id}", remote: true) do |f| %>
+      <%= f.check_box :done, class: 'toggle', data: { autosubmit: true, 'disable-with': 'Saving…' } %>
+      <label data-toggleEdit='true'><%= task.name %></label>
+    <% end %>
+    <%= form_for(task, namespace: "destroy-#{task.id}", method: :delete, remote: true) do |f| %>
+      <%= f.button('', class: 'destroy') %>
+    <% end %>
+  </div>
+  <%= form_for(task, namespace: "edit-#{task.id}", remote: true) do |f| %>
+    <%= f.text_field :name, class: 'edit', data: { toggleView: true } %>
+  <% end %>
+</li>
